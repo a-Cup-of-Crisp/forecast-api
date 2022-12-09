@@ -1,0 +1,22 @@
+services:
+  client:
+    restart: always
+    ports:
+      - 80:80
+
+  server:
+    image: lsdrfrx/forecast-api
+    restart: always
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+    ports:
+      - 3000:3000
+
+  ai:
+    restart: always
+    environment:
+      - HOST=0.0.0.0
+      - PORT=6000
+    ports:
+      - 6000:6000

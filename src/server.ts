@@ -14,7 +14,10 @@ app.use(cors());
 app.use(urlencoded());
 app.use(json());
 app.get("/getWeather", async (req: Request, res: Response) => {
-  let data = await WeatherProvider.getWeather("48.480311", "135.071756");
+  const lat = req.query.lat as string,
+    lon = req.query.lon as string;
+
+  let data = await WeatherProvider.getWeather(lat, lon);
 
   res.send(data);
 });

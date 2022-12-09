@@ -1,9 +1,11 @@
 import fetch from "node-fetch";
 
+const API_KEY = process.env.API_KEY;
+
 export class WeatherProvider {
   static async getWeather(lat: string, lon: string) {
     let response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=f0f8250a24f84c1bb693095488b4830a`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
     );
     return response.json();
   }

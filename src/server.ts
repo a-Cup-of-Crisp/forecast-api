@@ -1,7 +1,7 @@
 import express from "express";
 import { Request, Response } from "express";
-import dotenv from "dotenv";
 import { WeatherProvider } from "./weather-provider/weather.provider";
+import dotenv from "dotenv";
 
 dotenv.config();
 

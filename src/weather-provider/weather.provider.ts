@@ -1,21 +1,31 @@
 import fetch from "node-fetch";
 import dotenv from "dotenv";
-import { WeatherResult } from "./weather-result.dto";
+import RedisClient from "@redis/client/dist/lib/client";
 
 dotenv.config();
 const API_KEY = process.env.API_KEY;
+const interval = 5000;
 
 export class WeatherProvider {
-  static async getWeather(lat: string, lon: string) {
-    let response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
-    );
+    static async getWeather(lat: string, lon: string) {
+        let data = null;
+        data = await callOWM(lat, lon);   
 
-    let data = await response.json();
-    data = parse(data);
+        setInterval(async () => {
+            let response = await callOWM(lat, lon);
+            data = await response.json();            
+            data = parse(data);
 
-    return mapping(data);
-  }
+            //let aiResponse = await fetch(``);
+
+        }, interval);
+    }
+}
+
+async function callOWM(lat: string, lon: string) {
+    return await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+    )
 }
 
 function parse(data: any): any {    
@@ -23,20 +33,6 @@ function parse(data: any): any {
     data.main.pressure = toTorr(data.main.pressure * 0.750064);
 
     return data;
-}
-
-function mapping(data: any): WeatherResult {
-    let result: WeatherResult = {
-        temp: data.main.temp,
-        pressure: data.main.pressure,
-        humidity: data.main.humidity,
-        visibility: data.visibility,
-        wind_speed: data.wind.speed,
-        cloudiness: data.clouds.all,
-        rain: data.rain,
-        snow: data.snow
-    }
-    return result;
 }
 
 function toCelsius(val: number): number {

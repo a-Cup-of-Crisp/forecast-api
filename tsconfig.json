@@ -6,6 +6,6 @@
     "rootDir": "./",
     "baseUrl": "./",
     "esModuleInterop": true,
-    "strict": true
+    "strict": false
   }
 }

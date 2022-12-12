@@ -14,8 +14,15 @@ app.use(cors());
 app.use(urlencoded());
 app.use(json());
 app.get("/getWeather", async (req: Request, res: Response) => {
-  let data = await WeatherProvider.getWeather("48.480311", "135.071756");
+  let data = await WeatherProvider.getWeather("55.677466", "41.395744");
 
+  const result = await fetch("http://localhost:5000", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
   res.send(data);
 });
 
